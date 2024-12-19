@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setHtmlCode_, setSvgCode_ } from "../../redux/wireFrameSlice";
 import { fixSvgCode } from "./helpers";
-
+import { Dispatch } from "@reduxjs/toolkit";
 export const generateWireframe = async (
   screenshotFile: File,
   setSvgCode: React.Dispatch<React.SetStateAction<string | null>>,
@@ -34,7 +34,7 @@ export const generateWireframe = async (
   }
 };
 
-export const handleModifyWireframe = async (svgCode:string,userPrompt:string,dispatch:any,setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const handleModifyWireframe = async (svgCode:string,userPrompt:string,dispatch:Dispatch,setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
    
     const response = await axios.post("/api/modifyWireframe", {
