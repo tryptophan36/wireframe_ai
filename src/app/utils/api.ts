@@ -34,7 +34,7 @@ export const generateWireframe = async (
   }
 };
 
-export const handleModifyWireframe = async (svgCode:String,userPrompt:String,dispatch:any,setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const handleModifyWireframe = async (svgCode:string,userPrompt:string,dispatch:any,setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
    
     const response = await axios.post("/api/modifyWireframe", {
