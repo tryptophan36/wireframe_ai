@@ -1,10 +1,13 @@
 "use client"
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSvgCode_ } from '../../redux/wireFrameSlice'
 
 const ExportSvg = () => {
   const [isOpen, setIsOpen] = useState(false)
   const svgCode = useSelector((state) => state.wireframe.svgCode_)
+  
+  const dispatch=useDispatch()
 
   const handleExportPNG = () => {
     // Create a temporary container and insert the SVG
@@ -47,7 +50,9 @@ const ExportSvg = () => {
 
     img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
   }
-
+  useEffect(()=>{
+   dispatch(setSvgCode_(localStorage.getItem("localSvgCode")))
+  },[])
   return (
     <div className="relative">
       <button

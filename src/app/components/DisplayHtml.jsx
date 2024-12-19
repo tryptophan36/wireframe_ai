@@ -67,6 +67,7 @@ const DisplayHtml = () => {
         }
 
       useEffect(()=>{
+        dispatch(setHtmlCode_(localStorage.getItem("localHtmlCode")))
         console.log(htmlCode)
         updateEditorWidth();
         window.addEventListener("resize", updateEditorWidth);

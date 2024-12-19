@@ -1,22 +1,25 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import Editor from '@monaco-editor/react'
 import DisplayWireframe from './DisplayWireframe'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import DisplayHtml from './DisplayHtml'
 import DisplaySvgCode from './DisplaySvgCode'
 import ExportSvg from './ExportSvg'
-
+import { setSvgCode_ } from '@/redux/wireFrameSlice'
 const CodeEditor = () => {
   const [activeTab, setActiveTab] = useState('preview')
    const svgCode_ = useSelector((state) => state.wireframe.svgCode_) || ""
-
+   const dispatch=useDispatch()
 
   const tabs = [
     { id: 'code', label: '💻 Svg' },
     { id: 'preview', label: '👁️ Preview' },
     {id:'html',label:"💻 Html"}
   ]
+
+  useEffect(()=>{
+    dispatch(setSvgCode_(localStorage.getItem("localSvgCode")));
+  },[])
 
   return (
     <div className="w-full sm:h-screen bg-gray-900  overflow-hidden">

@@ -27,6 +27,7 @@ const DisplaySvgCode = () => {
   }
 
   useEffect(() => {
+    dispatch(setSvgCode_(localStorage.getItem("localSvgCode")))
     updateEditorWidth();
     window.addEventListener("resize", updateEditorWidth);
     return () => window.removeEventListener("resize", updateEditorWidth);

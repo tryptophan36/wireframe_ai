@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  svgCode_: localStorage.getItem("localSvgCode")||'Hello',
-  htmlCode_: localStorage.getItem("localHtmlCode")||'',
+  svgCode_: 'Hello',
+  htmlCode_: '',
 }
 
 const wireframeSlice = createSlice({
