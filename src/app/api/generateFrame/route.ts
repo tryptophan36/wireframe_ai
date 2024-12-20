@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
                               - In the Output return just the svg code and no other text.
                              `
     // Use wireframeGeneratePrompt if userPrompt is empty
-    const promptToUse = userPrompt.trim() ? userPrompt : wireframeGeneratePrompt;
+    const promptToUse = userPrompt.trim() ? buildUserPrompt : wireframeGeneratePrompt;
     
     if (!file) {
       return NextResponse.json({ error: "No screenshot uploaded" }, { status: 400 });
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     const msg = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",
-      max_tokens: 4000,
+      max_tokens: 5000,
       temperature: 0,
       system: systemPrompt,
       messages: [
