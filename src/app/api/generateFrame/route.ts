@@ -10,6 +10,14 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('screenshot') as File;
+    const userPrompt = formData.get('userPrompt') as string || ""; // Get userPrompt from formData
+    
+    const buildUserPrompt = `${userPrompt} 
+                              Follow these instructions with the above prompt
+                              - In the Output return just the svg code and no other text.
+                             `
+    // Use wireframeGeneratePrompt if userPrompt is empty
+    const promptToUse = userPrompt.trim() ? userPrompt : wireframeGeneratePrompt;
     
     if (!file) {
       return NextResponse.json({ error: "No screenshot uploaded" }, { status: 400 });
@@ -28,7 +36,7 @@ export async function POST(request: NextRequest) {
         {
           role: "user",
           content: [
-            { type: "text", text: wireframeGeneratePrompt },
+            { type: "text", text: promptToUse },
             {
               type: "image",
               source: {

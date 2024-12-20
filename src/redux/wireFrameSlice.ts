@@ -1,3 +1,4 @@
+import { fixSvgCode } from '@/app/utils/helpers'
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
@@ -10,7 +11,9 @@ const wireframeSlice = createSlice({
   initialState,
   reducers: {
     setSvgCode_: (state, action) => {
-      state.svgCode_ = action.payload
+      const cleanSvgCode= fixSvgCode(action.payload)
+      console.log(cleanSvgCode)
+      state.svgCode_ = cleanSvgCode
     },
     setHtmlCode_: (state, action) => {
       state.htmlCode_ = action.payload

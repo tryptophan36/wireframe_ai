@@ -14,7 +14,7 @@ const ModifyChat = ({ svgCode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const examplePrompts = [
     "Add three tabs to the hero section",
-    "Make the navigation sticky and transparent",
+    "Add a footer component at the bottom",
     "Add a contact form with 3 input fields",
     "Change the layout to two columns",
   ];

@@ -2,15 +2,17 @@ import axios from "axios";
 import { setHtmlCode_, setSvgCode_ } from "../../redux/wireFrameSlice";
 import { fixSvgCode } from "./helpers";
 import { Dispatch } from "@reduxjs/toolkit";
+
 export const generateWireframe = async (
   screenshotFile: File,
+  promptText:string,
   setSvgCode: React.Dispatch<React.SetStateAction<string | null>>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
 
   const formData = new FormData();
   formData.append("screenshot", screenshotFile);
-
+  formData.append("userPrompt",promptText)
   try {
     console.log("fetching")
     const response = await axios.post(

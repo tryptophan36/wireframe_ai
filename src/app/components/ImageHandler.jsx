@@ -14,7 +14,8 @@ const ImageHandler = () => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   const [isLoading,setIsLoading]=useState(false)
-
+  const [customPromptSelect, setCustomPromptSelect] = useState(false);
+  const [promptText, setPromptText] = useState("");
   const router = useRouter();
   const dispatch = useDispatch()
   
@@ -58,7 +59,7 @@ const ImageHandler = () => {
   const handleCreate = () => {
     if (image) {
       setIsLoading(true) 
-      generateWireframe(ImageFile,setSvgCode,setIsLoading)
+      generateWireframe(ImageFile,promptText,setSvgCode,setIsLoading)
       // const svgCode="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg width=\"1200\" height=\"800\" xmlns=\"http://www.w3.org/2000/svg\">\n  <!-- Navigation Bar -->\n  <rect x=\"0\" y=\"0\" width=\"1200\" height=\"60\" fill=\"#ffffff\" stroke=\"#000000\" stroke-dasharray=\"5,5\"/>\n  <g transform=\"translate(20,20)\">\n    <!-- Logo -->\n    <rect x=\"0\" y=\"0\" width=\"100\" height=\"20\" fill=\"#ffffff\" stroke=\"#000000\" stroke-dasharray=\"5,5\"/>\n    <text x=\"10\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Vercel Logo</text>\n    \n    <!-- Nav Items -->\n    <text x=\"120\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Products ▼</text>\n    <text x=\"220\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Solutions ▼</text>\n    <text x=\"320\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Resources ▼</text>\n    <text x=\"420\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Enterprise</text>\n    <text x=\"520\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Docs</text>\n    <text x=\"620\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Pricing</text>\n    \n    <!-- Right Nav -->\n    <text x=\"900\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Log In</text>\n    <text x=\"980\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Contact</text>\n    <rect x=\"1050\" y=\"-5\" width=\"80\" height=\"30\" rx=\"15\" fill=\"#ffffff\" stroke=\"#000000\"/>\n    <text x=\"1065\" y=\"15\" font-family=\"Arial\" font-size=\"12\">Sign Up</text>\n  </g>\n\n  <!-- Hero Section -->\n  <g transform=\"translate(0,150)\">\n    <text x=\"600\" y=\"50\" font-family=\"Arial\" font-size=\"48\" text-anchor=\"middle\" font-weight=\"bold\">Your complete platform for the web.</text>\n    \n    <text x=\"600\" y=\"120\" font-family=\"Arial\" font-size=\"18\" text-anchor=\"middle\" fill=\"#666666\">\n      Vercel provides the developer tools and cloud infrastructure\n    </text>\n    <text x=\"600\" y=\"150\" font-family=\"Arial\" font-size=\"18\" text-anchor=\"middle\" fill=\"#666666\">\n      to build, scale, and secure a faster, more personalized web.\n    </text>\n\n    <!-- CTA Buttons -->\n    <g transform=\"translate(450,200)\">\n      <rect x=\"0\" y=\"0\" width=\"150\" height=\"40\" rx=\"20\" fill=\"#ffffff\" stroke=\"#000000\"/>\n      <text x=\"75\" y=\"25\" font-family=\"Arial\" font-size=\"14\" text-anchor=\"middle\">Start Deploying</text>\n      \n      <rect x=\"170\" y=\"0\" width=\"150\" height=\"40\" rx=\"20\" fill=\"#ffffff\" stroke=\"#000000\"/>\n      <text x=\"245\" y=\"25\" font-family=\"Arial\" font-size=\"14\" text-anchor=\"middle\">Get a Demo</text>\n    </g>\n  </g>\n\n  <!-- Background Decoration -->\n  <rect x=\"0\" y=\"500\" width=\"1200\" height=\"300\" fill=\"#ffffff\" stroke=\"#000000\" stroke-dasharray=\"5,5\"/>\n  <text x=\"600\" y=\"650\" font-family=\"Arial\" font-size=\"12\" text-anchor=\"middle\">[Decorative Gradient Background]</text>\n</svg>"
     }
   };
@@ -157,6 +158,29 @@ const ImageHandler = () => {
           </div>
         </div>
       </div>
+        <div className='mt-3'>
+          <input
+            type="checkbox"
+            id="customPromptCheckbox"
+            checked={customPromptSelect}
+            onChange={() => setCustomPromptSelect(!customPromptSelect)}
+          />
+          <label htmlFor="customPromptCheckbox" className="ml-2 text-xl text-white">
+            Add Custom Prompt
+          </label>
+        </div>
+
+        {customPromptSelect && (
+          <div className="mt-4">
+            <input
+              type="text"
+              value={promptText}
+              onChange={(e) => setPromptText(e.target.value)}
+              placeholder="  Enter your custom prompt"
+              className="border h-[4rem] rounded-lg placeholder-gray-800 text-black p-2 w-full"
+            />
+          </div>
+        )}
 
     
     </div>
