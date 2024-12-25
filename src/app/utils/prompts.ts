@@ -7,18 +7,55 @@ export const systemPrompt = "You are an expert wireframing tool capable of gener
 export const systemPromptForHtml = "You are a professional frontend development tool capable of generating clean, responsive, and visually accurate HTML code. Your task is to replicate website WireFrames into semantic, modern, and responsive HTML/CSS code. Focus on maintaining layout, structure, text, and visual hierarchy."
 
 //User Prompt to generate Initial wireframe
-export const wireframeGeneratePrompt = `I am providing a screenshot of a website. Convert it into a minimalist Balsamiq-style SVG wireframe that adheres to the following specifications:
-            - Retain the original website layout (navigation bar, hero section, buttons, images).
-            - Add clear labels for key sections like 'Navigation Bar', 'Hero Section', 'Image Placeholder', and 'Button'.
-            - Include all the exact text from the screenshot.
-            - Use black and white styling with dashed outlines.
-            - Donot use any other colors other than black and white.
-            - Ensure the SVG output is clean, simple, and scalable.
-            - In the Output return just the svg code and no other text.
-            - The background of the wireframe should be white and text and elements in black 
-            -always add a black border around the whole svg element on all 4 side of the svg element
-            Here is the website screenshot as Base64 attached`
+// export const wireframeGeneratePrompt = `I am providing a screenshot of a website. Convert it into a minimalist Balsamiq-style SVG wireframe that adheres to the following specifications:
+//             - Retain the original website layout (navigation bar, hero section, buttons, images).
+//             - Add clear labels for key sections like 'Navigation Bar', 'Hero Section', 'Image Placeholder', and 'Button'.
+//             - Include all the exact text from the screenshot.
+//             - Use black and white styling with dashed outlines.
+//             - Donot use any other colors other than black and white.
+//             - Ensure the SVG output is clean, simple, and scalable.
+//             - In the Output return just the svg code and no other text.
+//            - Clean and Readable: Ensure the SVG code is clean and readable, with proper indentation for nested elements.
+// -Strict Validation: Validate the SVG to prevent issues like:
+// -Unescaped special characters (<, >, &) within text or attribute values.
+// -Incorrect use of whitespace or non-alphanumeric characters in attribute names or values.
+// -Safe Path Data: For paths (<path>), ensure the d attribute uses only valid path commands and coordinates (e.g., M, L, C, Z).
+// -Try to mae the wireframe as detailed as possible covering as many rectangles and boxes as in the website screenshot        
+// - The background of the wireframe should be white and text and elements in black 
+//             -always add a black border around the whole svg element on all 4 side of the svg element
+//             Here is the website screenshot as Base64 attached`
 
+export const wireframeGeneratePrompt = `You are an expert wireframing tool. Convert the provided website screenshot into a detailed, minimalist, Balsamiq-style SVG wireframe. Adhere to the following specifications:
+
+Detailed Structure:
+
+Replicate the original website layout as closely as possible, including all sections and elements (e.g., navigation bar, hero section, buttons, images, and any additional containers).
+Cover as many rectangles, boxes, and visible elements as possible from the website.
+Styling:
+
+Use only black and white styling. No other colors are allowed.
+Represent all sections with dashed outlines for containers and elements.
+Add clear, descriptive labels for all key sections:
+Navigation Bar
+Hero Section
+Image Placeholder
+Button (include button text)
+Text should use a clean and simple sans-serif font (e.g., Arial).
+Output:
+
+The background of the wireframe must be white, and all text and elements should be in black.
+Always include a black border around the entire SVG element on all four sides.
+Return only the SVG code, with no additional text or explanations.
+Clean and Readable SVG:
+
+The SVG must be properly formatted, with readable indentation for all nested elements.
+Validate the SVG to prevent issues:
+Escape special characters (<, >, &) in text or attributes.
+Ensure proper use of attribute names and values (no invalid whitespace or characters).
+For <path> elements, ensure the d attribute contains only valid path commands and coordinates (e.g., M, L, C, Z).
+Enhanced Detail:
+
+Ensure the wireframe is as detailed as possible, replicating even small elements such as dividers, cards, input fields, icons, or placeholders visible on the website.`
 
 ////User Prompt to Html code
             export const htmlGeneratePrompt = `I am providing a Wireframe of a website in the form of SVG code Your task is to generate the following:
@@ -61,3 +98,19 @@ Instructions:
 Output Requirements:
 Return the updated SVG code, formatted and optimized for clarity and scalability.
 Preserve the original styling unless explicitly instructed otherwise.`
+
+export const ModificationPromptWithImage = `You are provided with the SVG wireframe code 
+              and the part of the wireframe image attached attached where you make change:
+              The image provided is one of the cropped part of the wireframe
+              Modify the wireframe according to the requirements:
+Scope: Focus only on the described sections and do not alter unrelated parts.
+Instructions:
+Output Requirements:
+Return the updated SVG code, formatted and optimized for clarity and scalability.
+Preserve the original styling unless explicitly instructed otherwise.
+ - The background of the wireframe should be white and text and elements in black 
+Return only the SVG code and no other text.
+ -always add a black border around the whole svg element on all 4 side of the svg element
+ -try to make changes only in the region of image passed 
+ -Try not to overlap the elements
+ -If no Image is provided make the change only according to the prompt`

@@ -47,7 +47,7 @@ const DisplaySvgCode = () => {
               fontSize: 14,
               lineNumbers: 'on',
               roundedSelection: false,
-              scrollBeyondLastLine: false,
+              scrollBeyondLastLine: true,
               readOnly: false,
               automaticLayout: true,
             }}

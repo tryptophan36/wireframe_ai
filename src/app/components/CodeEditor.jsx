@@ -8,8 +8,8 @@ import ExportSvg from './ExportSvg'
 import { setSvgCode_ } from '@/redux/wireFrameSlice'
 const CodeEditor = () => {
   const [activeTab, setActiveTab] = useState('preview')
-   const svgCode_ = useSelector((state) => state.wireframe.svgCode_) || ""
-   const dispatch=useDispatch()
+  const svgCode_ = useSelector((state) => state.wireframe.svgCode_) || ""
+  const dispatch=useDispatch()
 
   const tabs = [
     { id: 'code', label: '💻 Svg' },

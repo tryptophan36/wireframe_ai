@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   svgCode_: 'Hello',
   htmlCode_: '',
+  modificationImage_: null
 }
 
 const wireframeSlice = createSlice({
@@ -12,7 +13,6 @@ const wireframeSlice = createSlice({
   reducers: {
     setSvgCode_: (state, action) => {
       const cleanSvgCode= fixSvgCode(action.payload)
-      console.log(cleanSvgCode)
       state.svgCode_ = cleanSvgCode
     },
     setHtmlCode_: (state, action) => {
@@ -22,8 +22,15 @@ const wireframeSlice = createSlice({
       state.svgCode_ = ''
       state.htmlCode_ = ''
     },
+    setModificationImage_:(state,action)=>{
+      if (state.modificationImage_) {
+        URL.revokeObjectURL(state.modificationImage_);
+      }
+      state.modificationImage_=action.payload
+    }
+
   },
 })
 
-export const { setSvgCode_, setHtmlCode_, resetWireframe } = wireframeSlice.actions
+export const { setSvgCode_, setHtmlCode_, resetWireframe,setModificationImage_ } = wireframeSlice.actions
 export default wireframeSlice.reducer

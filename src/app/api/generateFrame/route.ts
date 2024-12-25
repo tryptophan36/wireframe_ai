@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     const msg = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",
-      max_tokens: 5000,
+      max_tokens: 6000,
       temperature: 0,
       system: systemPrompt,
       messages: [
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
               source: {
                 type: "base64",
                 media_type: "image/png",
-                data: base64Image,
+                data: base64Image||"",
               },
             },
           ],

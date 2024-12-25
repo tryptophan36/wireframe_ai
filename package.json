@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^1.0.5",
     "@anthropic-ai/sdk": "^0.33.1",
     "@monaco-editor/react": "^4.6.0",
     "@reduxjs/toolkit": "^2.5.0",
+    "ai": "^4.0.20",
     "axios": "^1.7.9",
     "next": "15.1.2",
     "react": "^19.0.0",

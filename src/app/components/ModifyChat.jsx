@@ -5,6 +5,8 @@ import { setSvgCode_ } from "../../redux/wireFrameSlice";
 import { handleModifyWireframe } from "../utils/api";
 import WithLoader from "./WithLoader";
 import { validatePrompt } from "../utils/helpers";
+import PreviewImage from '@/app/components/PreviewImage'
+
 
 const ModifyChat = ({ svgCode }) => {
   const [prompt, setPrompt] = useState("");
@@ -18,7 +20,9 @@ const ModifyChat = ({ svgCode }) => {
     "Add a contact form with 3 input fields",
     "Change the layout to two columns",
   ];
+  const modificationImage_=useSelector((state)=>state.wireframe.modificationImage_)
   const svgCode_ = useSelector((state) => state.wireframe.svgCode_);
+
   const handleModify = async () => {
     const validationError = validatePrompt(prompt);
     if (validationError) {
@@ -26,8 +30,13 @@ const ModifyChat = ({ svgCode }) => {
       return;
     }
     try {
+      let blob=new Blob([], { type: "image/png" });
+      if(modificationImage_){
+        const response = await fetch(modificationImage_);
+         blob = await response.blob();
+      }
       setIsLoading(true);
-      handleModifyWireframe(svgCode_, prompt, dispatch, setIsLoading);
+      handleModifyWireframe(svgCode_,blob, prompt, dispatch, setIsLoading);
     } catch (error) {
       setIsLoading(false);
       console.error("Error modifying wireframe:", error);
@@ -53,6 +62,8 @@ const ModifyChat = ({ svgCode }) => {
                 placeholder="Enter your modification prompt..."
                 className="w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
               />
+
+
               <button
                 onClick={handleModify}
                 className=" bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition-colors"
@@ -60,6 +71,7 @@ const ModifyChat = ({ svgCode }) => {
                 Modify
               </button>
             </div>
+              <PreviewImage url={modificationImage_}/>
             {error && (
               <span className="text-red-500 text-start text-sm">{error}</span>
             )}

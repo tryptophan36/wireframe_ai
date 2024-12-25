@@ -36,12 +36,16 @@ export const generateWireframe = async (
   }
 };
 
-export const handleModifyWireframe = async (svgCode:string,userPrompt:string,dispatch:Dispatch,setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const handleModifyWireframe = async (svgCode:string,blob:Blob,userPrompt:string,dispatch:Dispatch,setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
-   
-    const response = await axios.post("/api/modifyWireframe", {
-      svgCode,
-      userPrompt,
+    const formData = new FormData();
+  formData.append("screenshot", blob);
+  formData.append("userPrompt",userPrompt)
+  formData.append("svgCode",svgCode)
+    const response = await axios.post("/api/modifyWireframe", formData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
      const wireframeRes = response.data.wireFrame.content[0].text;
     const wireframe = fixSvgCode(wireframeRes)

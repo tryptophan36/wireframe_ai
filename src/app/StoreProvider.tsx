@@ -15,14 +15,13 @@ export default function StoreProvider({
     storeRef.current = makeStore()
   }
 
-  // Handle localStorage on client-side only
+
   useEffect(() => {
     const store = storeRef.current
     if (store && typeof window !== 'undefined') {
       // Initialize from localStorage
       const savedSvgCode = localStorage.getItem('localSvgCode') || 'Hello'
       const savedHtmlCode = localStorage.getItem('localHtmlCode') || ''
-      
       store.dispatch({ 
         type: 'wireframe/setSvgCode_', 
         payload: savedSvgCode 

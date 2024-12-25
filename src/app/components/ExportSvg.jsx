@@ -6,7 +6,6 @@ import { setSvgCode_ } from '../../redux/wireFrameSlice'
 const ExportSvg = () => {
   const [isOpen, setIsOpen] = useState(false)
   const svgCode = useSelector((state) => state.wireframe.svgCode_)
-  
   const dispatch=useDispatch()
 
   const handleExportPNG = () => {
