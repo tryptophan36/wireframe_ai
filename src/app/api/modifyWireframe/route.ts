@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { systemPrompt } from "@/app/utils/prompts";
-import { ContentBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -23,15 +22,13 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    let imageArray: ContentBlockParam[] = [];
     const arrayBuffer = await blob.arrayBuffer(); // Convert Blob to ArrayBuffer
     const buffer = Buffer.from(arrayBuffer); // Create a Buffer from ArrayBuffer
     const base64 = buffer.toString("base64");
 
     const msg = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",
-      max_tokens: 5000,
+      max_tokens: 8000,
       temperature: 0,
       system: systemPrompt,
       messages: [
