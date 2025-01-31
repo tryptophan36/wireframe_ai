@@ -25,12 +25,12 @@ export const systemPromptForHtml = "You are a professional frontend development 
 //             -always add a black border around the whole svg element on all 4 side of the svg element
 //             Here is the website screenshot as Base64 attached`
 
-export const wireframeGeneratePrompt = `You are an expert wireframing tool. Convert the provided website screenshot into a detailed, minimalist, Balsamiq-style SVG wireframe. Adhere to the following specifications:
+export const wireframeGeneratePrompt = `You are an expert wireframing tool. Convert the provided website screenshot and the [2]hierarchy of the UI into a detailed, minimalist, Balsamiq-style SVG wireframe. Adhere to the following specifications:
 
 Detailed Structure:
 
-Replicate the original website layout as closely as possible, including all sections and elements (e.g., navigation bar, hero section, buttons, images, and any additional containers).
-Cover as many rectangles, boxes, and visible elements as possible from the website.
+Analyze the hierarchy of the UI and replicate the original website layout as closely as possible, including all sections and elements (e.g., navigation bar, hero section, buttons, images, and any additional containers).
+cover all the elements in the hierarchy
 Styling:
 
 Use only black and white styling. No other colors are allowed.
@@ -53,9 +53,8 @@ Validate the SVG to prevent issues:
 Escape special characters (<, >, &) in text or attributes.
 Ensure proper use of attribute names and values (no invalid whitespace or characters).
 For <path> elements, ensure the d attribute contains only valid path commands and coordinates (e.g., M, L, C, Z).
-Enhanced Detail:
-
-Ensure the wireframe is as detailed as possible, replicating even small elements such as dividers, cards, input fields, icons, or placeholders visible on the website.`
+The size should be scaled to the dimension 1200x720
+`
 
 ////User Prompt to Html code
             export const htmlGeneratePrompt = `I am providing a Wireframe of a website in the form of SVG code Your task is to generate the following:

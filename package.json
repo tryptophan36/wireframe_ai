@@ -11,10 +11,13 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.5",
     "@anthropic-ai/sdk": "^0.33.1",
+    "@gradio/client": "^1.10.0",
     "@monaco-editor/react": "^4.6.0",
     "@reduxjs/toolkit": "^2.5.0",
+    "@types/bun": "^1.2.1",
     "ai": "^4.0.20",
     "axios": "^1.7.9",
+    "bun": "^1.2.1",
     "next": "15.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

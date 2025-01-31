@@ -66,7 +66,10 @@ const ModifyChat = ({ svgCode }) => {
 
               <button
                 onClick={handleModify}
-                className=" bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition-colors"
+                disabled={!modificationImage_}
+                className={`bg-blue-600 text-white px-4 py-1.5 rounded-md transition-colors ${
+                  !modificationImage_ ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+                }`}
               >
                 Modify
               </button>

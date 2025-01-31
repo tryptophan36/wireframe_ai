@@ -83,7 +83,7 @@ Important: Return the whole updated svg code  only and no other text
         },
       ],
     });
-
+    console.log(msg);
     return NextResponse.json({ wireFrame: msg });
   } catch (error) {
     console.error(error);
