@@ -14,7 +14,7 @@ export const generateWireframe = async (
   formData.append("userPrompt", promptText);
   try {
     console.log("fetching");
-    const response = await axios.post("http://localhost:8080/api/generate-frame", formData, {
+    const response = await axios.post("/api/generateFrame", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
