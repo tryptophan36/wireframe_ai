@@ -79,7 +79,7 @@ export const generateFrameWithIterations =  async (
   formData.append("userPrompt", promptText);
   try {
     console.log("fetching");
-    const response = await axios.post("http://localhost:8000/api/generate-frame-new", formData, {
+    const response = await axios.post(`https://wireframeai-production.up.railway.app/api/generate-frame-new`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
