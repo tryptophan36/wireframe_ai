@@ -48,9 +48,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // const bytes = await file.arrayBuffer();
-    // const buffer = Buffer.from(bytes);
-    // const base64Image = buffer.toString("base64");
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64Image = buffer.toString("base64");
 
     // Process image with OmniParser
     const parserResult = await omniParserClient.predict("/process", {
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     const hierarchyData = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",
       max_tokens: 8000,
-      temperature: 0,
+      temperature: 1,
       system: systemPrompt,
       messages: [
         {
@@ -131,8 +131,8 @@ return the output with all the items.
               type: "image",
               source: {
                 type: "base64",
-                media_type: "image/webp",
-                data: OmniparserImagebase64Image || "",
+                media_type: "image/png",
+                data: base64Image || "",
               },
             },
             {

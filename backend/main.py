@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import generate_frame
+from routers import generate_frame,modify_frame,generate_frame_new
 import os
 from dotenv import load_dotenv
 import uvicorn
@@ -25,6 +25,8 @@ app.add_middleware(
 
 # Include routers
 app.include_router(generate_frame.router, prefix="/api", tags=["generate"])
+app.include_router(modify_frame.router, prefix="/api", tags=["modify"])
+app.include_router(generate_frame_new.router, prefix="/api", tags=["generateFrame"])
 
 @app.get("/")
 async def root():

@@ -13,7 +13,7 @@ const Wireframe = () => {
 
           <ModifyChat />
         </div>
-        <div className="">
+        <div className="w-[80%]">
           {/* <DisplayWireframe svgCode={image} /> */}
           <CodeEditor  />
         </div>

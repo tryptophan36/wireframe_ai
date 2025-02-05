@@ -184,7 +184,7 @@ const DisplayWireframe = () => {
       <div className="w-full max-w-4xl mx-auto p-4">
         <canvas
           ref={canvasRef}
-          width={1200}
+          width={1400}
           height={800}
           className="w-full border border-gray-200 rounded-lg shadow-sm cursor-crosshair"
           onMouseDown={handleMouseDown}

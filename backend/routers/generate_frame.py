@@ -1,5 +1,6 @@
 from fastapi import APIRouter, UploadFile, Form, HTTPException
 from langchain_anthropic import ChatAnthropic  
+from anthropic import Anthropic
 from gradio_client import Client, handle_file
 from dotenv import load_dotenv
 import base64
@@ -21,17 +22,26 @@ router = APIRouter()
 
 # Initialize API clients
 model = ChatAnthropic(
-    model="claude-3-5-sonnet-20240620",
+    model="claude-3-5-sonnet-20241022",
     temperature=0,
-    max_tokens=4000
+    max_tokens=8000
 )
 
+anthropic_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 @router.post("/generate-frame")
 async def generate_frame(screenshot: UploadFile, userPrompt: Optional[str] = Form("")):
     try:
         # Connect to OmniParser model
         logger.info("Connecting to OmniParser...")
+
+        base64_image = None
+        if screenshot:
+            # Read the file into a bytes buffer
+            contents = await screenshot.read()
+            # Convert bytes to base64
+            base64_image = base64.b64encode(contents).decode('utf-8')
+
 
         omni_parser_client = Client(
             "microsoft/OmniParser",
@@ -69,29 +79,42 @@ async def generate_frame(screenshot: UploadFile, userPrompt: Optional[str] = For
         logger.info("Generating UI hierarchy...")
         messages = [
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": "Organize UI elements based on their hierarchy."},
-            {"role": "user", "content": f"Here is the screenshot: {encoded_string}"},
-            {"role": "user", "content": f"[1] {parser_result[1]} "},
-            {"role": "user", "content": f"[2] {parser_result[2]} "},
-        ]
-        
-        hierarchy_response = await model.ainvoke(messages)
-        hierarchy_data_cleaned = [
-            line.strip() 
-            for line in hierarchy_response.content.split("\n") 
-            if line.strip()
-        ]
-        logger.info(f"Hierarchy data cleaned: {hierarchy_data_cleaned}")
+            {"role": "user", "content": [
 
-        # Generate wireframe
-        logger.info("Generating wireframe...")
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": f"{prompt_to_use}\n[2] {hierarchy_data_cleaned}"},
-            {"role": "user", "content": f"Here is the screenshot: {encoded_string}"},
+                {
+                    "type":"text","text" : prompt_to_use
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/webp;base64,{encoded_string}"}
+                },
+                {"type": "text", "text": f"[1] {parser_result[1]}"},
+            ]}
         ]
         
-        wireframe_response = await model.ainvoke(messages)
+        wireframe_response = model.invoke(messages)
+        # hierarchy_data_cleaned = [
+        #     line.strip() 
+        #     for line in hierarchy_response.content.split("\n") 
+        #     if line.strip()
+        # ]
+        # logger.info(f"Hierarchy data cleaned: {hierarchy_response}")
+
+        # # Generate wireframe
+        # logger.info("Generating wireframe...")
+        # messages = [
+        #     {"role": "system", "content": system_prompt},
+        #     {"role": "user", "content": [
+        #         {"type": "text", "text": f"{prompt_to_use}"},
+        #         {"type": "text", "text": f"[2] {hierarchy_data_cleaned}"},
+        #         {
+        #             "type": "image_url",
+        #             "image_url": {"url": f"data:image/webp;base64,{encoded_string}"}
+        #         }
+        #     ]}
+        # ]
+        
+        # wireframe_response = model.invoke(messages)
         logger.info(f"Wireframe response: {wireframe_response}")
         return {"wireframe": wireframe_response}
 

@@ -55,7 +55,6 @@ Styling and Validation:
 
 Consistency: Preserve the original styling unless explicitly instructed otherwise.
 Colors: The background of the wireframe must remain white, and all text and elements should be in black.
-Borders: Include a black border around the entire SVG element on all four sides.
 Clean and Readable: Ensure the updated SVG is clean, readable, and properly formatted with clear indentation for nested elements.
 Validation:
 Escape special characters (<, >, &) within text or attribute values.
