@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     const hierarchyData = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",
       max_tokens: 8000,
-      temperature: 0,
+      temperature: 1,
       system: systemPrompt,
       messages: [
         {
@@ -88,8 +88,6 @@ export async function POST(request: NextRequest) {
 The output value that appears in the "Image Output" Image component.
 [1] str
 The output value that appears in the "Parsed screen elements" Textbox component.
-[2] str
-The output value that appears in the "Coordinates" Textbox component.
 You are provided with this output. Your task it to organize text elements & corresponding coordinates based on their UI hierarchy. You have been provided with an image for reference.
 give the data with as much detail as possible. to the original image best to your ability covering every small elements,rectangles and text of every part of the image.
 return the output with all the items.
@@ -107,10 +105,6 @@ return the output with all the items.
               type: "text",
               text: `[1] ${omniParserResult?.data[1]}`,
             },
-            {
-              type: "text",
-              text: `[2] ${omniParserResult?.data[2]}`,
-            },
           ],
         },
       ],
@@ -122,6 +116,7 @@ return the output with all the items.
       .map((line) => line.trim())
       .filter((line) => line.length > 0);
     console.log(hierarchyDataCleaned);
+    
     const msg = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",
       max_tokens: 8000,
