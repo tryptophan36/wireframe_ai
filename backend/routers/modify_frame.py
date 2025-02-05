@@ -1,16 +1,10 @@
 from fastapi import APIRouter, UploadFile, Form, HTTPException
 from langchain_anthropic import ChatAnthropic  
 from anthropic import Anthropic
-from gradio_client import Client, handle_file
 from dotenv import load_dotenv
 import base64
 import os
-import httpx
 import logging
-import tempfile
-from typing import Optional
-
-
 from utils.prompts import system_prompt, wireframe_generate_prompt
 
 load_dotenv()
