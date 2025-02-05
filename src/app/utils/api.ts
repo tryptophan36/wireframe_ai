@@ -49,7 +49,7 @@ export const handleModifyWireframe = async (
     formData.append("screenshot", blob);
     formData.append("userPrompt", userPrompt);
     formData.append("svgCode", svgCode);
-    const response = await axios.post("http://localhost:8000/api/modifyFrame", formData, {
+    const response = await axios.post("https://wireframeai-production.up.railway.app/api/modifyFrame", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

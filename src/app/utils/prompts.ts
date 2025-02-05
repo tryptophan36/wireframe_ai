@@ -55,6 +55,7 @@ Cover all the elements in the list !! important
 every text in the list should be present in the wireframe !! important
 Final image should be as close to the original image as possible but black and white !!! important
 The size should be scaled to the dimension 1400x800 without any distortion or overlapping of elements
+IGNORE THE IMAGES AND ICONS IN THE SCREENSHOT REPLACE THEM WITH BLACK AND WHITE RECTANGLES 
 MAKE SURE ITS EXACTLY AS IN THE SCREENSHOT
 Return only the SVG code, with no additional text or explanations..
 `

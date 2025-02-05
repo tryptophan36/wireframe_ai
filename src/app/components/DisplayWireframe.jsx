@@ -186,7 +186,7 @@ const DisplayWireframe = () => {
           ref={canvasRef}
           width={1400}
           height={800}
-          className="w-full border border-gray-200 rounded-lg shadow-sm cursor-crosshair"
+          className="w-full rounded-lg shadow-sm cursor-crosshair"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
