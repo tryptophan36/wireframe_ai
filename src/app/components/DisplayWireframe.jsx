@@ -158,6 +158,8 @@ const DisplayWireframe = () => {
     dispatch(setSvgCode_(prevState))
     localStorage.setItem("localSvgCode",prevState)
   }
+
+  
   
   useEffect(()=>{
     dispatch(setSvgCode_(localStorage.getItem("localSvgCode")));

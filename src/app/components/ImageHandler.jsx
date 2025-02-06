@@ -231,6 +231,13 @@ const ImageHandler = () => {
         pauseOnHover
         theme="dark"  // or "light" based on your preference
       />
+
+      <button
+        onClick={() => handleSaveImage(svgCode)}
+        className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors ml-4"
+      >
+        Save as Image
+      </button>
     </>
   );
 };

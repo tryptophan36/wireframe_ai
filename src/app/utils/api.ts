@@ -95,3 +95,4 @@ export const generateFrameWithIterations =  async (
     setIsLoading(false);
   }
 };
+
