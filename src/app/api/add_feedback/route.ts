@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
 import { put } from '@vercel/blob';
-import sharp from 'sharp';
+
 // Google Sheets setup
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -16,24 +16,12 @@ const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SHEET_ID;
 export async function PUT(request: Request) {
   try {
     const form = await request.formData();
-    const svgCode = form.get('svgCode') as string;
+    const pngImage = form.get('pngImage') as File;
     const rating = form.get('rating') as string;
     const id = form.get('id') || Date.now().toString() as string;
-    
-    if (!svgCode) {
-      return Response.json({ error: 'No SVG code provided' }, { status: 400 });
-    }
-
-    // Convert SVG to PNG buffer using sharp
-    const pngBuffer = await sharp(Buffer.from(svgCode))
-      .png()
-      .toBuffer();
-
-    // Create a File object from the buffer
-    const file = new File([pngBuffer], 'wireframe.png', { type: 'image/png' });
 
     // Upload to Vercel Blob
-    const blob = await put(file.name, file, { 
+    const blob = await put(pngImage.name, pngImage, { 
       access: 'public',
       contentType: 'image/png'
     });
@@ -42,7 +30,7 @@ export async function PUT(request: Request) {
     const timestamp = new Date().toISOString();
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:D', // Adjust range based on your sheet
+      range: 'Sheet1!A:D',
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [[timestamp, id, blob.url, rating]],

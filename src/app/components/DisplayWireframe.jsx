@@ -100,7 +100,7 @@ const DisplayWireframe = () => {
       if (label) {
         console.log(currentBox);
         setBoxes([{ ...currentBox, label }]);
-        captureCanvasPortionAndSend(currentBox.x,currentBox.y,currentBox.width,currentBox.height)
+        captureCanvasPortionAndSend(0,0,1400,800)
       }
       setCurrentBox(null);
     }

@@ -26,12 +26,44 @@ const CodeEditor = () => {
   const handleSaveWithFeedback = async (svgCode) => {
     setIsLoading(true);
     try {
-      // Generate a unique ID (you can use your preferred method)
       const id = Date.now().toString();
+      
+      // Create a new Image and Canvas
+      const img = new Image();
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Convert SVG to data URL
+      const svgBlob = new Blob([svgCode], { type: 'image/svg+xml' });
+      const svgUrl = URL.createObjectURL(svgBlob);
+      
+      // Wait for image to load
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = svgUrl;
+      });
+      
+      // Set canvas dimensions to match the image
+      canvas.width = img.width;
+      canvas.height = img.height;
+      
+      // Draw image on canvas with white background
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
+      
+      // Convert canvas to PNG blob
+      const pngBlob = await new Promise(resolve => {
+        canvas.toBlob(resolve, 'image/png');
+      });
+
+      // Clean up
+      URL.revokeObjectURL(svgUrl);
 
       const formData = new FormData();
-      formData.append("svgCode", svgCode);
       formData.append("rating", rating.toString());
+      formData.append("pngImage", pngBlob);
 
       const response = await fetch("/api/add_feedback", {
         method: "PUT",
