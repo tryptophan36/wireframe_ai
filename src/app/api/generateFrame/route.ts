@@ -26,7 +26,9 @@ type GradioData = {
 
 export async function POST(request: NextRequest) {
   try {
-    const omniParserClient = await Client.connect("microsoft/OmniParser");
+    const omniParserClient = await Client.connect("microsoft/OmniParser", {
+     
+    });
     const formData = await request.formData();
     const file = formData.get("screenshot") as File;
     const userPrompt = (formData.get("userPrompt") as string) || ""; // Get userPrompt from formData

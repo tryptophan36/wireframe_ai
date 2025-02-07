@@ -35,6 +35,7 @@ const ModifyChat = ({ svgCode }) => {
         const response = await fetch(modificationImage_);
          blob = await response.blob();
       }
+      
       setIsLoading(true);
       handleModifyWireframe(svgCode_,blob, prompt, dispatch, setIsLoading);
     } catch (error) {

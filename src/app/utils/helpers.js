@@ -32,20 +32,29 @@ export const convertToBase64 = (file) => {
 
   export const fixSvgCode = (svgCode) => {
     try {
+      // Extract SVG code using regex
+      const svgMatch = svgCode.match(/<svg[\s\S]*?<\/svg>/);
+      if (!svgMatch) {
+        console.error("No SVG code found in the string");
+        return null;
+      }
+
+      const extractedSvg = svgMatch[0];
+
       // Try parsing the SVG using DOMParser
       const parser = new DOMParser();
-      const svgDocument = parser.parseFromString(svgCode, "image/svg+xml");
-  
+      const svgDocument = parser.parseFromString(extractedSvg, "image/svg+xml");
+
       // Check for parsing errors
       const parseError = svgDocument.getElementsByTagName("parsererror");
       if (parseError.length > 0) {
         // Handle invalid SVG: remove incomplete parts
-        const validCode = svgCode.slice(0, svgCode.lastIndexOf("<"));
+        const validCode = extractedSvg.slice(0, extractedSvg.lastIndexOf("<"));
         return validCode + "</svg>";
       }
-  
+
       // If the SVG is already valid, return it
-      return svgCode;
+      return extractedSvg;
     } catch (error) {
       console.error("Error fixing SVG code:", error);
       return null;
