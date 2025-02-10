@@ -85,6 +85,7 @@ Output Requirements:
 
 Ensure modifications are precise and detailed, accurately reflecting the changes requested in the provided image and user instructions.
 start with <svg> tag and end with </svg> tag !!!Important
+ ALWAYS RETURN THE FULL SVG CODE DONT INCLDUE THINGS LIKE <!-- Rest of the SVG code remains unchanged --> <!-- ... --> IMPORTANT
  The changes should only be visible inside the bounding box area or else something bad will happen 
   Important: Return the whole updated svg code only and no other text """.format(user_prompt=userPrompt)},
                 {"type": "text", "text": svgCode}
