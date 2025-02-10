@@ -68,7 +68,7 @@ Scope:
 Identify: First, locate the section of the SVG code that corresponds to the provided Bounding Box.
 Modifications are to be made to the identified section of the SVG code
 Modify: Apply these changes specified in the user instructions:
- ({user_prompt}) 
+ ({user_prompt}) Inside the bounding box !!IMPORTANT
 Preserve: Do not alter unrelated sections or elements of the SVG.
 Modification Instructions:
 Make changes only to the identified part of the SVG based on the image and the user's specified changes.
