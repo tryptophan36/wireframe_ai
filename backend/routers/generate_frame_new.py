@@ -7,7 +7,7 @@ import logging
 from typing import Optional, List, Dict
 from pydantic import BaseModel
 from utils.prompts import system_prompt, wireframe_generate_prompt
-from langchain_openai import ChatOpenAI
+
 
 # Load environment variables
 load_dotenv()

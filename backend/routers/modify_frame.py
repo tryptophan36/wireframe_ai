@@ -6,7 +6,7 @@ import base64
 import os
 import logging
 from utils.prompts import system_prompt, wireframe_generate_prompt
-from langchain_openai import ChatOpenAI
+
 
 load_dotenv()
 # Set up logging
