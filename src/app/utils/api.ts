@@ -84,11 +84,12 @@ export const handleModifyWireframe = async (
     formData.append("userPrompt", userPrompt);
     formData.append("svgCode", svgCode);
     formData.append("fullSvg", pngBlob);
-    const response = await axios.post(" https://wireframeai-production.up.railway.app/api/modifyFrame", formData, {
+    const response = await axios.post("http://127.0.0.1:8000/api/modifyFrame", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+
     const wireframeRes = response.data.wireFrame.content;
     const wireframe = fixSvgCode(wireframeRes);
     console.log("Wireframe modified:", wireframe);
@@ -115,9 +116,10 @@ export const generateFrameWithIterations =  async (
   formData.append("userPrompt", promptText);
   try {
     console.log("fetching");
-    const response = await axios.post(`https://wireframeai-production.up.railway.app/api/generate-frame-new`, formData, {
+    const response = await axios.post(`http://127.0.0.1:8000/api/generate-frame-new`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+
       },
     });
     const wireframe = response.data.wireframe.iterations[0];

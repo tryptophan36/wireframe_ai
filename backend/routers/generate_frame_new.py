@@ -65,7 +65,7 @@ async def interactive_elements(state: WireframeState) -> Dict:
     prompt = f"{state.user_prompt}\n" if state.user_prompt else ""
     passPrompt = """
     Focus on these instructions religiously;
-    Focus on interactive elements and specific UI components make sure to cover all details and position adjusted according to size provided
+    Focus on interactive elements and specific UI components make sure to cover all details and text with icons and position adjusted according to size provided
     """
     response = await process_section(
         state.base64_image,
@@ -82,7 +82,9 @@ async def final_styling(state: WireframeState) -> Dict:
     prompt = f"{state.user_prompt}\n" if state.user_prompt else ""
     passPrompt = """
     Focus on these instructions religiously;
-    Add detailed annotations and styling specifications Make SURE THERE ARE NO OVERLAPPING ELEMENTS"""
+    Add detailed annotations and styling specifications Make SURE THERE ARE NO OVERLAPPING ELEMENTS or else something bad will happen
+    mention in comments what took the most time to generate
+    """
     response = await process_section(
         state.base64_image,
         prompt,

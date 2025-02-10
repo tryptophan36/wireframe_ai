@@ -5,36 +5,64 @@ system_prompt = """You are an expert wireframing tool capable of generating mini
 system_prompt_for_html = """You are a professional frontend development tool capable of generating clean, responsive, and visually accurate HTML code. Your task is to replicate website WireFrames into semantic, modern, and responsive HTML/CSS code. Focus on maintaining layout, structure, text, and visual hierarchy."""
 
 # User Prompt to generate Initial wireframe
-wireframe_generate_prompt = """You are an expert wireframing tool. 
-you are provided  with 
-Image : screenshot of the UI website
-Previous Iteration : previous iteration's SVG code
-your task is to analyze all the given data and convert it  into a detailed, minimalist, Balsamiq-style SVG wireframe. Adhere to the following specifications:
+wireframe_generate_prompt = WIREFRAME_GENERATOR_PROMPT = """
+As an expert wireframing tool, analyze and convert UI screenshots into detailed, minimalist, Balsamiq-style SVG wireframes based on the following inputs and specifications:
 
-Detailed Structure:
+INPUT REQUIREMENTS:
+1. screenshot: UI website screenshot image
+2. previous_svg: Previous iteration's SVG code (optional)
+3. element_list: List of UI elements that must be included
 
-Analyze the hierarchy of the UI and replicate the original website layout as closely as possible, including all sections and elements (e.g., navigation bar, hero section, buttons, images, and any additional containers).
-cover all the elements in the list
-Styling:
+WIREFRAME SPECIFICATIONS:
 
-Use only black and white styling. No other colors are allowed.
-Add clear, descriptive labels for all key sections:
-Maintain proper spacing between the elements as in the screenshot. !!!important
+1. Layout & Structure:
+   - Viewport dimensions: 1500x800 pixels
+   - Maintain original layout hierarchy and proportions
+   - Preserve precise element spacing from screenshot
+   - Include all elements from element_list without exception
+   - Match original positioning of components
 
-The background of the wireframe must be white, and all text and elements should be in black.
+2. Visual Style:
+   - Colors: Strictly black (#000000) and white (#FFFFFF) only 
+   - Background: White (#FFFFFF)
+   - Typography: Arial or sans-serif font family
+   - Line thickness: 2px for borders and separators
 
-Clean and Readable SVG:
-The SVG must be properly formatted, with readable indentation for all nested elements.
-Validate the SVG to prevent issues:
-Escape special characters (<, >, &) in text or attributes.
-Ensure proper use of attribute names and values (no invalid whitespace or characters).
-For <path> elements, ensure the d attribute contains only valid path commands and coordinates (e.g., M, L, C, Z).
+3. Element Requirements:
+   - Clear section labels for:
+     * Navigation components
+     * Hero sections
+     * Content blocks
+     * Interactive elements
+   - Image placeholders: Rectangle with diagonal cross lines
+   - Buttons: Rectangle with label text centered
+   - Text blocks: Represented with actual content
+   - Icons: Simplified black outlines
+   - Forms: Input fields with descriptive labels
 
-Cover all the elements in the list !! important
-every text in the list should be present in the wireframe !! important
-Final image should be as close to the original image as possible but black and white !!! important
-The size should be scaled to the dimension 1400x800 without any distortion or overlapping of elements
-Return only the SVG code, with no additional text or explanations. """
+4. SVG Technical Standards:
+   - Valid SVG 1.1 specification
+   - Proper viewBox attribute (0 0 1500 800)
+   - Semantic grouping using <g> elements
+   - Descriptive class names for elements
+   - Clean, hierarchical structure with proper indentation
+   - Escaped special characters in text
+   - Optimized path commands
+   - No transformation matrices
+   - No inline styles (use attributes)
+
+5. Quality Checks:
+   - No element overlapping
+   - No distortion of proportions
+   - All text from element_list included
+   - Maintained visual hierarchy
+   - Proper spacing between elements
+   - Readable text size (minimum 12px)
+   - Clear element boundaries
+   - Consistent stroke weights
+
+Return only valid SVG code without any surrounding text or explanations.
+"""
 
 # User Prompt to generate HTML code
 html_generate_prompt = """I am providing a Wireframe of a website in the form of SVG code Your task is to generate the following:
