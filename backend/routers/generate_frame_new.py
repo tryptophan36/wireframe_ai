@@ -6,8 +6,8 @@ import os
 import logging
 from typing import Optional, List, Dict
 from pydantic import BaseModel
-from utils.prompts import system_prompt, wireframe_generate_prompt,wireframe_generate_prompts
-from langgraph.graph import StateGraph, START, END
+from utils.prompts import system_prompt, wireframe_generate_prompt
+from langchain_openai import ChatOpenAI
 
 # Load environment variables
 load_dotenv()
@@ -24,7 +24,11 @@ model = ChatAnthropic(
     temperature=0,
     max_tokens=8000
 )
-
+# model = ChatOpenAI(
+#     model="gpt-4o",
+#     temperature=0,
+#     max_tokens=8000
+# )
 class Section(BaseModel):
     name: str
     coordinates: Dict[str, int]  # x1, y1, x2, y2

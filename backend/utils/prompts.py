@@ -34,7 +34,6 @@ Cover all the elements in the list !! important
 every text in the list should be present in the wireframe !! important
 Final image should be as close to the original image as possible but black and white !!! important
 The size should be scaled to the dimension 1400x800 without any distortion or overlapping of elements
-IGNORE THE IMAGES AND ICONS IN THE SCREENSHOT REPLACE THEM WITH BLACK AND WHITE RECTANGLES 
 Return only the SVG code, with no additional text or explanations. """
 
 # User Prompt to generate HTML code
@@ -170,3 +169,146 @@ wireframe_generate_prompts = [
       - No redundant `<g>` tags or unnecessary element duplication.  
     """
 ]
+
+
+wireframe_to_html_prompt = """
+You are an expert wireframing tool.  
+You are provided with:  
+- **Image:** A screenshot of the UI website  
+- **Previous Iteration:** The previous iteration's SVG code  
+
+### **Your Task:**
+Analyze the given data and convert it into **detailed HTML code** that EXACTLY replicates the original website layout. Follow these specifications:
+IN a balsamiq style wireframe
+---
+### **1. Detailed Structure**
+- Retain the **original website hierarchy**, including:
+  - **Navigation Bar**
+  - **Hero Section**
+  - **Buttons** (with exact button text and rounded corners)
+  - **Headings, paragraphs, and image placeholders**
+  - **Any additional containers or UI elements**
+- **Cover all elements** present in the UI screenshot and ensure their correct placement.
+- **Use exact text content** from the provided screenshot.
+
+---
+### **2. Styling**
+- Use **only black and white styling** (no colors allowed).
+- **Image and icon placeholders** should be replaced with **black-and-white rectangular divs** labeled as `"Image Placeholder"`.
+- Maintain proper spacing and alignment between elements, ensuring it matches the original layout.
+- Use **inline CSS for simplicity** and **Flexbox for layout structuring**.
+
+
+### **4. Key Requirements**
+- Use **semantic HTML tags** such as `<nav>`, `<header>`, `<section>`, `<div>`, `<h1>`, `<button>`, etc.
+- Optimize the code for **clarity, scalability, and simplicity**.
+- Ensure the **visual output EXACTLY matches** the layout and text of the original wireframe with all the elements in the same position. OR SOMETHING BAD WILL HAPPEN
+- **Return only the HTML code** with no additional text or explanations.
+IT SHOULD START WITH <html> tag and end with </html> tag or else something bad will happen
+"""
+
+wireframe_prompt_balsamiq = """
+You are an expert wireframing tool specializing in Balsamiq-style conversions.
+
+INPUT:
+- Screenshot Image: Original UI website screenshot
+- Previous Iteration: Previous iteration's SVG code (if applicable)
+
+TASK:
+Convert the provided screenshot into a detailed, minimalist, Balsamiq-style SVG wireframe following these exact specifications:
+
+1. STRUCTURAL ELEMENTS:
+
+a) Layout & Hierarchy:
+- Maintain exact positioning and layout of all UI elements
+- Preserve original content structure and visual hierarchy
+- Scale final output to 1400x800 while maintaining proportions
+
+b) Component Handling:
+- Replace all images with crossed rectangle placeholder (X from corner to corner)
+- Use a simple user icon (⚬) for avatar/profile pictures
+- Convert logos to plain text using Comic Sans MS or similar playful font
+- Maintain original aspect ratios for all placeholder elements
+
+2. STYLING SPECIFICATIONS:
+
+a) Colors & Fills:
+- Background: Pure white (#FFFFFF)
+- All elements: Black (#000000)
+- Use only these grays for shading:
+  * Light gray (#CCCCCC) for secondary elements
+  * Medium gray (#999999) for disabled states
+  * Dark gray (#666666) for borders and lines
+
+b) Typography:
+- Primary Font: Comic Sans MS or similar hand-drawn style font
+- Font Weights:
+  * Headers: Bold (700)
+  * Normal text: Regular (400)
+  * Labels: Regular (400)
+- Font Sizes:
+  * Large Headers: 24px
+  * Subheaders: 18px
+  * Body text: 14px
+  * Labels/Small text: 12px
+
+c) Element Styling:
+- Buttons:
+  * Rounded corners (radius: 4px)
+  * 1px solid border
+  * Light gray fill (#CCCCCC)
+- Input Fields:
+  * Rectangular with rounded corners (radius: 2px)
+  * 1px solid border
+  * No fill (white background)
+- Containers/Sections:
+  * 1px solid border
+  * No fill
+  * Optional rounded corners (radius: 2px) for cards/modules
+
+3. SPECIAL ELEMENTS:
+
+a) Interactive Elements:
+- Dropdowns: Rectangle with small triangle at right edge (▼)
+- Radio Buttons: Empty circles (○)
+- Checkboxes: Empty squares (□)
+- Toggle Switches: Pill-shaped outline with circle indicator
+
+b) Navigation Elements:
+- Menu Items: Plain text with 1px bottom border
+- Breadcrumbs: Text separated by forward slashes (/)
+- Tabs: Rectangle containers with bottom border for active state
+
+4. WIREFRAME CONVENTIONS:
+
+a) Annotations:
+- Use straight lines with 90-degree angles for arrows/connectors
+- Keep labels horizontal and aligned with elements
+- Place labels outside elements when possible
+
+b) Spacing:
+- Maintain consistent padding (minimum 8px)
+- Preserve original spacing between elements
+- Use grid alignment when possible (8px increments)
+
+5. SVG TECHNICAL REQUIREMENTS:
+
+a) Code Structure:
+- Properly nested and indented elements
+- Logical grouping using <g> tags
+- Clear, semantic IDs and classes
+
+b) Optimization:
+- Use basic shapes where possible (<rect>, <circle>, etc.)
+- Minimize path complexity
+- Properly escape special characters
+- Validate all attributes and values
+
+OUTPUT:
+Return only the clean, properly formatted SVG code without any additional text or explanations. Ensure the SVG:
+- Scales properly to 1400x800
+- Maintains proper aspect ratios
+- Has no overlapping elements
+- Includes all original content and structure
+- Follows exact Balsamiq styling conventions
+"""
