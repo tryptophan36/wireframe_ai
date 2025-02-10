@@ -44,12 +44,12 @@ const DisplayWireframe = () => {
 
   const drawBox = (ctx, box) => {
     ctx.strokeStyle = "rgba(0, 123, 255, 0.8)";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 8;
     ctx.strokeRect(box.x, box.y, box.width, box.height);
 
     if (box.label) {
       ctx.fillStyle = "rgba(0, 123, 255, 0.8)";
-      ctx.font = "14px Arial";
+      ctx.font = "32px Arial";
       ctx.fillText(box.label, box.x, box.y - 5);
     }
   };
