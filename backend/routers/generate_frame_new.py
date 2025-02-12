@@ -2,13 +2,15 @@ from fastapi import APIRouter, UploadFile, Form
 from langchain_anthropic import ChatAnthropic  
 from dotenv import load_dotenv
 import base64
-import os
 import logging
 from typing import Optional, List, Dict
 from pydantic import BaseModel
 from utils.prompts import system_prompt, wireframe_generate_prompt
-from langgraph.graph import StateGraph
-
+from .wireframe_workflow import create_workflow
+from utils.frame_processor import process_section
+from .sectioned_workflow import create_sectioned_workflow
+from utils.image_processor import split_base64_image
+from utils.omni_parser import OmniParser
 # Load environment variables
 load_dotenv()
 
@@ -37,122 +39,20 @@ class Section(BaseModel):
 class WireframeRequest(BaseModel):
     sections: List[Section] = []
 
-# Define the workflow states
-class WireframeState(BaseModel):
-    base64_image: str
-    user_prompt: str
-    iterations: List[str]
-
-# Define processing nodes
-async def high_level_layout(state: WireframeState) -> Dict:
-    logger.info("high_level_layout executed")
-    prompt = f"{state.user_prompt}\n" if state.user_prompt else ""
-    passPrompt = """
-    Focus on these instructions religiously;
-    Generate a high-level layout structure for the entire interface make it look clean and aesthetic"""
-    response = await process_section(
-        state.base64_image,
-        prompt,
-        system_prompt,
-        passPrompt,
-        None
-    )
-    logger.info(f"Response generated")
-    return {"base64_image": state.base64_image, "iterations":[response.content],"user_prompt": state.user_prompt}
-
-async def interactive_elements(state: WireframeState) -> Dict:
-    logger.info("interactive_elements executed")
-    prompt = f"{state.user_prompt}\n" if state.user_prompt else ""
-    passPrompt = """
-    Focus on these instructions religiously;
-    Focus on interactive elements and specific UI components make sure to cover all details and text with icons and position adjusted according to size provided
-    """
-    response = await process_section(
-        state.base64_image,
-        prompt,
-        system_prompt,
-        passPrompt,
-        state.iterations[-1]
-    )
-    logger.info(f"Response generated")
-    return {"base64_image": state.base64_image, "iterations":[response.content],"user_prompt": state.user_prompt}
-
-async def final_styling(state: WireframeState) -> Dict:
-    logger.info("final_styling executed")
-    prompt = f"{state.user_prompt}\n" if state.user_prompt else ""
-    passPrompt = """
-    Focus on these instructions religiously;
-    Add detailed annotations and styling specifications Make SURE THERE ARE NO OVERLAPPING ELEMENTS or else something bad will happen
-    mention in comments what took the most time to generate
-    """
-    response = await process_section(
-        state.base64_image,
-        prompt,
-        system_prompt,
-        passPrompt,
-        state.iterations[-1]
-    )
-    logger.info(f"Response generated")
-    return { "base64_image": "", "iterations":[response.content],"user_prompt": ""}
-
-# Build the graph
-graph = StateGraph(WireframeState)
-
-graph.add_node(high_level_layout)
-graph.add_node(interactive_elements)
-graph.add_node(final_styling)
-
-graph.set_entry_point("high_level_layout")
-graph.add_edge("high_level_layout", "interactive_elements")
-graph.add_edge("interactive_elements", "final_styling")
-graph.set_finish_point("final_styling")
-
-workflow = graph.compile()
+# Initialize workflows
+workflow = create_workflow()
+sectioned_workflow = create_sectioned_workflow()
 
 def handle_screenshot(screenshot: UploadFile) -> str:
     """Convert uploaded file to base64 string"""
     contents = screenshot.file.read()
     return base64.b64encode(contents).decode('utf-8')
 
-async def process_section(
-    base64_image: str,
-    prompt: str,
-    system_prompt: str,
-    passPrompt,
-    previous_code: Optional[str] = None
-) -> dict:
-    logger.info("pass executed ")
-    # Add previous code to prompt if available
-    if previous_code:
-        prompt = f"""Previous iteration's SVG code:
-{previous_code}
-
-{prompt}"""
-    
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": [
-            {
-                "type": "text",
-                "text": prompt
-            },
-            {
-                "type": "text",
-                "text": passPrompt
-            },
-            {
-                "type": "image_url",
-                "image_url": {"url": f"data:image/png;base64,{base64_image}"}
-            },
-        ]}
-    ]
-    
-    return model.invoke(messages)
 
 @router.post("/generate-frame-new")
 async def generate_frame_new(
     screenshot: UploadFile, 
-    request_config: Optional[str] = "iterative",
+    request_config: Optional[str] = "sectioned",
     userPrompt: Optional[str] = Form("")
 ):
     try:
@@ -162,42 +62,46 @@ async def generate_frame_new(
         encoded_string = base64.b64encode(screenshot_contents).decode('utf-8')
 
         if request_config == "iterative":
-            # Use LangGraph workflow
-            logger.info(f"Iterative request_config: {request_config}")
-            logger.info(f"invoking workflow")
+            # Use original LangGraph workflow
+            logger.info("Using iterative workflow")
             try:
                 final_state = await workflow.ainvoke({
                     "base64_image": encoded_string,
                     "user_prompt": wireframe_generate_prompt,
                     "iterations": []
                 })
-                logger.info(f"final_state: {final_state}")
                 return {"wireframe": final_state}
             except Exception as e:
                 logger.error(f"Error invoking workflow: {str(e)}")
                 return {"error": str(e)}
         
         elif request_config == "sectioned":
-            # Process each section separately
-            wireframe_sections = []
-            for section in request_config.sections:
-                section_prompt = f"""Focus on the following section of the screenshot:
-                Region: {section.name}
-                Coordinates: ({section.coordinates['x1']}, {section.coordinates['y1']}) to 
-                           ({section.coordinates['x2']}, {section.coordinates['y2']})
-                {wireframe_generate_prompt}"""
-                
-                section_response = await process_section(
-                    encoded_string,
-                    section_prompt,
-                    system_prompt
-                )
-                wireframe_sections.append({
-                    "section": section.name,
-                    "wireframe": section_response
+             # Initialize and use OmniParser
+            # logger.info("Connecting to OmniParser...")
+            # omni_parser = OmniParser()
+            # contents = await screenshot.read()
+            # parser_text,parser_coordinates = await omni_parser.process_image(contents)
+            # Use new sectioned workflow with parallel processing
+            logger.info("Using sectioned workflow with parallel processing")
+            try:
+                sections_base64 = split_base64_image(encoded_string,save_debug_images=False)
+                final_state = await sectioned_workflow.ainvoke({
+                    "base64_image": sections_base64,
+                    "sections": [],
+                    "section_results": [],
+                    "merged_result": [],
+                    "image_processed": False,
+                    "omni_parser_results": {
+                        "parser_text": "",
+                        "parser_coordinates": ""
+                    },
                 })
-            
-            return {"wireframe_sections": wireframe_sections}
+                return {
+                    "wireframe": final_state["merged_result"][2]["merged_result"],
+                }
+            except Exception as e:
+                logger.error(f"Error in sectioned workflow: {str(e)}")
+                return {"error": str(e)}
         
         else:
             # Handle single-pass processing (existing code)

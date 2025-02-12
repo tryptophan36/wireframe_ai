@@ -10,6 +10,7 @@ You are an expert wireframing tool.
 you are provided  with 
 Image : screenshot of the UI website
 Previous Iteration : previous iteration's SVG code
+omni_parser_results : It contains the text and coordinates of elements in the image !!!Follow This strictly or else something bad will happen
 your task is to analyze all the given data and convert it  into a detailed, minimalist, Balsamiq-style SVG wireframe. Adhere to the following specifications:
 
 Detailed Structure:
@@ -37,6 +38,7 @@ every text in the list should be present in the wireframe !! important
 Final image should be as close to the original image as possible but black and white !!! important
 The size should be scaled to the dimension 1500x800 without any distortion or overlapping of elements
 MAKE SURE ITS EXACTLY AS IN THE SCREENSHOT
+mention in comments of the svg code what took the most time to generate !!important
 Return only the SVG code, with no additional text or explanations..
 """
 
@@ -315,4 +317,43 @@ Return only the clean, properly formatted SVG code without any additional text o
 - Has no overlapping elements
 - Includes all original content and structure
 - Follows exact Balsamiq styling conventions
+"""
+
+wireframe_divide_prompt = WIREFRAME_GENERATOR_PROMPT = """
+I have a website screenshot, it is broken into two pieces You have one of the pieces.
+You are an expert wireframing tool. 
+you are provided  with 
+Image 1 : screenshot of part of the UI website 
+
+your task is to analyze all the given data and convert  the image 1 into a detailed SVG wireframe. Adhere to the following specifications:
+
+Detailed Structure:
+
+Analyze the the UI and replicate the image 1 as closely as possible, including all sections and elements.
+cover all the elements in the image
+MAKE SURE ITS EXACTLY AS IN THE SCREENSHOT or else something bad will happen
+
+Styling:
+Use only black and white styling. No other colors are allowed.
+Add clear, descriptive labels for all key sections:
+Maintain proper spacing between the elements as in the screenshot Measurements not needed to be exact. !!!important
+Images and graphs : Instead of images and graphs use a rectangle with a X from corner to corner or a circle with a X from corner to corner whichever is applicable 
+Keep it minimalistic and clean and balsamiq style
+DO NOT WASTE TIME ON EXACT MEASUREMENTS (eg numbers,charts,graphs) ADD ANY VALUE as long as its filled
+
+The background of the wireframe must be white, and all text and elements should be in black.
+
+Clean and Readable SVG:
+The SVG must be properly formatted, with readable indentation for all nested elements.
+Validate the SVG to prevent issues:
+Escape special characters (<, >, &) in text or attributes.
+Ensure proper use of attribute names and values (no invalid whitespace or characters).
+For <path> elements, ensure the d attribute contains only valid path commands and coordinates (e.g., M, L, C, Z).
+
+every text in the list should be present in the wireframe !! important
+Final image should be as close to the original image as possible but black and white !!! important
+The wireframe should be without any distortion or overlapping of elements
+mention in comments of the svg code what took the most time to generate !!important
+The output should be scaled to 1500x400
+Return only the SVG code, with no additional text or explanations.
 """
